@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-tag">✨ Project UTS Kecerdasan Buatan Genap 2026/2027</div>
+  <h1 class="page-title">Sistem Klasifikasi Diabetes Berbasis Decision Tree</h1>
+  <p class="page-subtitle">
+    Implementasi algoritma Machine Learning Pohon Keputusan (Decision Tree C4.5/CART) untuk prediksi dini risiko diabetes melitus berdasarkan dataset medis Pima Indians Diabetes, mengacu pada ketentuan soal UTS dan studi komparasi jurnal ilmiah JDMIS 2026.
+  </p>
+</div>
+
+<!-- Stat Highlights Grid -->
+<div class="grid-4" style="margin-bottom: 2rem;">
+  <div class="stat-card">
+    <div class="stat-label">Total Entri Dataset</div>
+    <div class="stat-value">{{ metrics.dataset_summary.total_rows }} <span style="font-size: 1rem; font-weight: 500; color: var(--text-muted);">pasien</span></div>
+    <div class="stat-desc">500 Non-Diabetes (65.1%) & 268 Diabetes (34.9%)</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Rasio Pembagian Data</div>
+    <div class="stat-value">80 : 20</div>
+    <div class="stat-desc">614 Data Latih (Train) & 154 Data Uji (Test)</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Akurasi Model Baseline</div>
+    <div class="stat-value" style="color: var(--primary);">{{ metrics.model_baseline.metrics.accuracy_pct }}%</div>
+    <div class="stat-desc">100% Identik dengan Hasil Jurnal JDMIS 2026</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Akurasi Model Optimasi</div>
+    <div class="stat-value" style="color: var(--success);">{{ metrics.model_optimized.metrics.accuracy_pct }}%</div>
+    <div class="stat-desc">Peningkatan +0.65% dengan Imputasi Median</div>
+  </div>
+</div>
+
+<!-- UTS Checklist Card & Academic Context -->
+<div class="grid-2" style="margin-bottom: 2rem;">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>📋</span> Checklist Pemenuhan Kriteria UTS Klasifikasi Data
+      </h3>
+      <span class="badge badge-success">8 / 8 Kriteria Terpenuhi</span>
+    </div>
+    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.9rem;">
+      <li style="display: flex; align-items: flex-start; gap: 0.65rem;">
+        <span style="color: var(--success); font-weight: bold;">✔</span>
+        <div>
+          <strong>Sumber & Karakteristik Dataset:</strong> Dijelaskan lengkap (768 data, 8 variabel medis, UCI/Kaggle).
+        </div>
+      </li>
+      <li style="display: flex; align-items: flex-start; gap: 0.65rem;">
+        <span style="color: var(--success); font-weight: bold;">✔</span>
+        <div>
+          <strong>Preprocessing Data:</strong> Analisis nilai 0 fisiologis & imputasi median untuk mencegah data leakage.
+        </div>
+      </li>
+      <li style="display: flex; align-items: flex-start; gap: 0.65rem;">
+        <span style="color: var(--success); font-weight: bold;">✔</span>
+        <div>
+          <strong>Pembagian Data Training & Testing:</strong> Metode Hold-out 80% (614 data) : 20% (154 data).
+        </div>
+      </li>
+      <li style="display: flex; align-items: flex-start; gap: 0.65rem;">
+        <span style="color: var(--success); font-weight: bold;">✔</span>
+        <div>
+          <strong>Pelatihan Model Klasifikasi:</strong> Algoritma Decision Tree dengan kriteria Entropy & max_depth=3.
+        </div>
+      </li>
+      <li style="display: flex; align-items: flex-start; gap: 0.65rem;">
+        <span style="color: var(--success); font-weight: bold;">✔</span>
+        <div>
+          <strong>Evaluasi Model:</strong> Confusion Matrix (TN=83, FP=16, FN=20, TP=35), Accuracy, Precision, Recall, F1.
+        </div>
+      </li>
+      <li style="display: flex; align-items: flex-start; gap: 0.65rem;">
+        <span style="color: var(--success); font-weight: bold;">✔</span>
+        <div>
+          <strong>Pengujian Data Baru:</strong> Form interaktif dengan 8 parameter klinis & penjelasan jalur keputusan.
+        </div>
+      </li>
+      <li style="display: flex; align-items: flex-start; gap: 0.65rem;">
+        <span style="color: var(--success); font-weight: bold;">✔</span>
+        <div>
+          <strong>Komparasi dengan Jurnal:</strong> Perbandingan mendalam dengan penelitian Insani et al. (JDMIS 2026).
+        </div>
+      </li>
+      <li style="display: flex; align-items: flex-start; gap: 0.65rem;">
+        <span style="color: var(--success); font-weight: bold;">✔</span>
+        <div>
+          <strong>Deployment Online & Presentasi:</strong> Siap deploy di cloud (Render) dan dilengkapi Mode Presentasi 10 Menit.
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>📖</span> Artikel Jurnal Ilmiah Referensi Utama
+      </h3>
+      <span class="badge badge-primary">JDMIS Vol. 4, No. 1, 2026</span>
+    </div>
+    <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+      <p style="margin-bottom: 0.75rem;">
+        <strong>Judul:</strong> <em>Prediksi Diabetes Berbasis Decision Tree Dengan Menggunakan Dataset Pima Indians Diabetes</em>
+      </p>
+      <p style="margin-bottom: 0.75rem;">
+        <strong>Penulis:</strong> Yustri Insani, Marcel Filemon Naibaho, Sardo Pardingotan Sipayung (Universitas Katolik Santo Thomas, Medan).
+      </p>
+      <p style="margin-bottom: 0.75rem;">
+        <strong>Penerbit:</strong> <em>JDMIS: Journal of Data Mining and Information Systems</em> (DOI: 10.54259/jdmis.v4i1.7107).
+      </p>
+      <p style="margin-bottom: 1rem;">
+        <strong>Temuan Kunci Jurnal:</strong> Fitur Glukosa (<em>Glucose</em>) adalah faktor paling dominan dalam diagnosis diabetes, membagi populasi pada batas konsentrasi <strong>≤ 127.5 mg/dL</strong>, diikuti oleh faktor indeks massa tubuh (BMI) dan usia (Age).
+      </p>
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="{{ url_for('comparison') }}" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+          Lihat Komparasi Lengkap →
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Navigasi Cepat Modul Aplikasi -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">
+      <span>🚀</span> Modul Navigasi Aplikasi Web
+    </h3>
+    <span style="font-size: 0.85rem; color: var(--text-muted);">Pilih modul untuk meninjau detail implementasi</span>
+  </div>
+
+  <div class="grid-3">
+    <a href="{{ url_for('dataset') }}" class="card" style="background: rgba(255,255,255,0.02); text-decoration: none;">
+      <h4 style="color: #fff; margin-bottom: 0.5rem;">📁 1. Eksplorasi Dataset</h4>
+      <p style="font-size: 0.85rem; color: var(--text-secondary);">
+        Melihat 768 sampel data Pima Indians, statistik deskriptif 8 variabel klinis, dan visualisasi distribusi target.
+      </p>
+    </a>
+
+    <a href="{{ url_for('preprocessing') }}" class="card" style="background: rgba(255,255,255,0.02); text-decoration: none;">
+      <h4 style="color: #fff; margin-bottom: 0.5rem;">⚙️ 2. Preprocessing & Splitting</h4>
+      <p style="font-size: 0.85rem; color: var(--text-secondary);">
+        Menganalisis anomali biologis nilai 0, teknik imputasi median data latih, dan hold-out split 80:20 (614:154).
+      </p>
+    </a>
+
+    <a href="{{ url_for('modeling') }}" class="card" style="background: rgba(255,255,255,0.02); text-decoration: none;">
+      <h4 style="color: #fff; margin-bottom: 0.5rem;">🌳 3. Model Decision Tree</h4>
+      <p style="font-size: 0.85rem; color: var(--text-secondary);">
+        Visualisasi diagram pohon keputusan (max_depth=3, Entropy), pohon baseline vs teroptimasi, dan aturan If-Then.
+      </p>
+    </a>
+
+    <a href="{{ url_for('evaluation') }}" class="card" style="background: rgba(255,255,255,0.02); text-decoration: none;">
+      <h4 style="color: #fff; margin-bottom: 0.5rem;">🎯 4. Evaluasi & Matriks Konfusi</h4>
+      <p style="font-size: 0.85rem; color: var(--text-secondary);">
+        Matriks konfusi interaktif (TN=83, FP=16, FN=20, TP=35), akurasi 76.62%, presisi 69%, recall 64%, dan skor F1.
+      </p>
+    </a>
+
+    <a href="{{ url_for('comparison') }}" class="card" style="background: rgba(255,255,255,0.02); text-decoration: none;">
+      <h4 style="color: #fff; margin-bottom: 0.5rem;">📑 5. Komparasi Jurnal</h4>
+      <p style="font-size: 0.85rem; color: var(--text-secondary);">
+        Analisis perbandingan komprehensif (persamaan, perbedaan, penyebab) antara hasil project dengan paper JDMIS 2026.
+      </p>
+    </a>
+
+    <a href="{{ url_for('predict_page') }}" class="card" style="background: rgba(255,255,255,0.02); text-decoration: none;">
+      <h4 style="color: #fff; margin-bottom: 0.5rem;">⚡ 6. Pengujian Data Baru</h4>
+      <p style="font-size: 0.85rem; color: var(--text-secondary);">
+        Form uji coba pasien baru dengan fitur preset cepat, prediksi instan, pengukur probabilitas, dan jalur keputusan pohon.
+      </p>
+    </a>
+  </div>
+</div>
+{% endblock %}

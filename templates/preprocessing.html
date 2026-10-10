@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-tag">⚙️ Kriteria 2 Soal UTS</div>
+  <h1 class="page-title">Preprocessing Data & Pembagian Data (Data Splitting)</h1>
+  <p class="page-subtitle">
+    Rangkaian prosedur penyiapan data mentah, penanganan anomali nilai nol biologis, serta pembagian partisi data latih dan uji secara terkontrol.
+  </p>
+</div>
+
+<!-- Alur Preprocessing -->
+<div class="card" style="margin-bottom: 2rem;">
+  <div class="card-header">
+    <h3 class="card-title">
+      <span>🔄</span> 4 Tahapan Utama Preprocessing Data
+    </h3>
+    <span class="badge badge-primary">Pipeline Data AI</span>
+  </div>
+  
+  <div class="grid-2">
+    <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm); border-top: 3px solid var(--primary);">
+      <h4 style="color: #fff; margin-bottom: 0.5rem;">1. Penyesuaian Format & Pemberian Header Kolom</h4>
+      <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+        Dataset mentah dari repositori UCI/Kaggle disimpan tanpa baris nama kolom. Sistem melakukan penyesuaian dengan menyematkan 8 nama fitur prediktor (<em>Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age</em>) dan 1 label target (<em>Outcome</em>).
+      </p>
+    </div>
+
+    <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm); border-top: 3px solid var(--secondary);">
+      <h4 style="color: #fff; margin-bottom: 0.5rem;">2. Deteksi Anomali Nilai 0 Fisiologis</h4>
+      <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+        Mendeteksi nilai 0 yang tidak masuk akal secara medis pada 5 atribut: Glukosa (5 baris), Tekanan Darah (35 baris), Tebal Kulit (227 baris), Insulin (374 baris), dan BMI (11 baris). Nilai 0 ini diidentifikasi sebagai data hilang (<em>missing data</em>) yang belum tercatat saat pemeriksaan laboratorium.
+      </p>
+    </div>
+
+    <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm); border-top: 3px solid var(--warning);">
+      <h4 style="color: #fff; margin-bottom: 0.5rem;">3. Penanganan Data (Baseline vs Imputasi Median)</h4>
+      <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+        Sistem mengimplementasikan dua skenario:
+        <br>• <strong>Model Baseline:</strong> Mempertahankan nilai asli sesuai eksperimen jurnal JDMIS 2026.
+        <br>• <strong>Model Optimasi:</strong> Mengganti nilai 0 dengan nilai Median yang dihitung <em>hanya</em> dari data latih untuk menghindari <em>data leakage</em> (kebocoran informasi data uji).
+      </p>
+    </div>
+
+    <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm); border-top: 3px solid var(--success);">
+      <h4 style="color: #fff; margin-bottom: 0.5rem;">4. Pembagian Data (Hold-out 80:20)</h4>
+      <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+        Dataset 768 baris dibagi menggunakan metode hold-out dengan proporsi <strong>80% data latih (614 sampel)</strong> untuk proses pembelajaran pohon dan <strong>20% data uji (154 sampel)</strong> untuk evaluasi performa objektif.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Rincian Data Splitting -->
+<div class="grid-2" style="margin-bottom: 2rem;">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>✂️</span> Rincian Pembagian Data Latih & Uji
+      </h3>
+      <span class="badge badge-success">Metode Hold-out Validated</span>
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 0.35rem;">
+        <span style="color: var(--primary);">Data Latih (Training Set) — 80%</span>
+        <span style="color: #fff;">{{ metrics.splitting.train_count }} Sampel</span>
+      </div>
+      <div class="probability-bar-wrapper">
+        <div class="prob-fill-sehat" style="width: 80%; background: var(--primary);"></div>
+      </div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+        Digunakan oleh algoritma Decision Tree untuk menghitung Information Gain dan membentuk struktur percabangan pohon.
+      </p>
+    </div>
+
+    <div>
+      <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 0.35rem;">
+        <span style="color: var(--secondary);">Data Uji (Testing Set) — 20%</span>
+        <span style="color: #fff;">{{ metrics.splitting.test_count }} Sampel</span>
+      </div>
+      <div class="probability-bar-wrapper">
+        <div class="prob-fill-sehat" style="width: 20%; background: var(--secondary);"></div>
+      </div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+        Tersimpan terpisah (tidak pernah dilihat model saat training). Terdiri dari <strong>{{ metrics.splitting.test_target_distribution['0'] }} pasien sehat</strong> dan <strong>{{ metrics.splitting.test_target_distribution['1'] }} pasien diabetes</strong>.
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>💡</span> Nilai Imputasi Median (Model Teroptimasi)
+      </h3>
+      <span class="badge badge-primary">Sesuai Saran Jurnal</span>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.85rem;">
+      Nilai median di bawah ini dihitung murni dari data latih (<em>training set</em>) untuk menggantikan nilai 0 yang abnormal:
+    </p>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Fitur Medis</th>
+            <th>Nilai Pengganti (Median Data Latih)</th>
+            <th>Alasan Medis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Glucose</strong></td>
+            <td><code style="color: var(--primary); font-size: 0.95rem;">{{ metrics.model_optimized.imputation.Glucose }} mg/dL</code></td>
+            <td>Nilai median representatif batas normal puasa</td>
+          </tr>
+          <tr>
+            <td><strong>BloodPressure</strong></td>
+            <td><code style="color: var(--primary); font-size: 0.95rem;">{{ metrics.model_optimized.imputation.BloodPressure }} mm Hg</code></td>
+            <td>Tekanan diastolik sehat standar dewasa</td>
+          </tr>
+          <tr>
+            <td><strong>SkinThickness</strong></td>
+            <td><code style="color: var(--primary); font-size: 0.95rem;">{{ metrics.model_optimized.imputation.SkinThickness }} mm</code></td>
+            <td>Ketebalan lipatan kulit triceps median</td>
+          </tr>
+          <tr>
+            <td><strong>Insulin</strong></td>
+            <td><code style="color: var(--primary); font-size: 0.95rem;">{{ metrics.model_optimized.imputation.Insulin }} mu U/ml</code></td>
+            <td>Konsentrasi insulin 2 jam pasca makan</td>
+          </tr>
+          <tr>
+            <td><strong>BMI</strong></td>
+            <td><code style="color: var(--primary); font-size: 0.95rem;">{{ metrics.model_optimized.imputation.BMI }} kg/m²</code></td>
+            <td>Median indeks massa tubuh populasi sampel</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

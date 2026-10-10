@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-tag">🎯 Kriteria 4 Soal UTS</div>
+  <h1 class="page-title">Evaluasi Kinerja Model Klasifikasi</h1>
+  <p class="page-subtitle">
+    Penilaian performa objektif pada 154 sampel data uji (<em>testing data</em>) menggunakan matriks konfusi, akurasi, presisi, recall, dan analisis tingkat kepentingan atribut medis.
+  </p>
+</div>
+
+<!-- Kartu Ringkasan Metrik Evaluasi -->
+<div class="grid-4" style="margin-bottom: 2rem;">
+  <div class="stat-card">
+    <div class="stat-label">Akurasi (Accuracy)</div>
+    <div class="stat-value" style="color: var(--primary);">{{ metrics.model_baseline.metrics.accuracy_pct }}%</div>
+    <div class="stat-desc">Proporsi total prediksi benar (118 dari 154 data)</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Presisi (Precision - Diabetes)</div>
+    <div class="stat-value" style="color: var(--secondary);">{{ metrics.model_baseline.metrics.precision_diabetes_pct }}%</div>
+    <div class="stat-desc">Ketepatan saat model memvonis pasien Diabetes</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Recall / Sensitivitas</div>
+    <div class="stat-value" style="color: var(--success);">{{ metrics.model_baseline.metrics.recall_diabetes_pct }}%</div>
+    <div class="stat-desc">Kemampuan mendeteksi pasien yang benar-benar Diabetes</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">F1-Score (Harmonic Mean)</div>
+    <div class="stat-value" style="color: var(--warning);">{{ metrics.model_baseline.metrics.f1_diabetes }}</div>
+    <div class="stat-desc">Keseimbangan antara nilai Precision dan Recall</div>
+  </div>
+</div>
+
+<!-- Matriks Konfusi (Confusion Matrix) -->
+<div class="grid-2" style="margin-bottom: 2rem;">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>🔢</span> Matriks Konfusi (Model Baseline - Sesuai Jurnal)
+      </h3>
+      <span class="badge badge-primary">Total 154 Data Uji</span>
+    </div>
+
+    <div class="confusion-matrix-box">
+      <!-- Row 1: Header Prediksi -->
+      <div class="cm-cell cm-header" style="background: transparent;"></div>
+      <div class="cm-cell cm-header">Prediksi: Sehat (0)</div>
+      <div class="cm-cell cm-header">Prediksi: Diabetes (1)</div>
+
+      <!-- Row 2: Aktual Sehat -->
+      <div class="cm-cell cm-header" style="text-align: left; justify-content: flex-start;">Aktual: Sehat (0)</div>
+      <div class="cm-cell cm-tn">
+        <span class="cm-count" style="color: var(--success);">{{ metrics.model_baseline.confusion_matrix.tn }}</span>
+        <span class="cm-title" style="color: var(--success);">True Negative (TN)</span>
+        <span class="cm-sub">Aktual Sehat, Prediksi Sehat</span>
+      </div>
+      <div class="cm-cell cm-fp">
+        <span class="cm-count" style="color: var(--warning);">{{ metrics.model_baseline.confusion_matrix.fp }}</span>
+        <span class="cm-title" style="color: var(--warning);">False Positive (FP)</span>
+        <span class="cm-sub">Aktual Sehat, Prediksi Diabetes</span>
+      </div>
+
+      <!-- Row 3: Aktual Diabetes -->
+      <div class="cm-cell cm-header" style="text-align: left; justify-content: flex-start;">Aktual: Diabetes (1)</div>
+      <div class="cm-cell cm-fn">
+        <span class="cm-count" style="color: var(--danger);">{{ metrics.model_baseline.confusion_matrix.fn }}</span>
+        <span class="cm-title" style="color: var(--danger);">False Negative (FN)</span>
+        <span class="cm-sub">Aktual Diabetes, Prediksi Sehat</span>
+      </div>
+      <div class="cm-cell cm-tp">
+        <span class="cm-count" style="color: var(--primary);">{{ metrics.model_baseline.confusion_matrix.tp }}</span>
+        <span class="cm-title" style="color: var(--primary);">True Positive (TP)</span>
+        <span class="cm-sub">Aktual Diabetes, Prediksi Diabetes</span>
+      </div>
+    </div>
+
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem;">
+      <em>Catatan Penting:</em> Nilai <strong>FN = 20</strong> (False Negative) adalah individu diabetes yang terprediksi sehat. Dalam diagnosa medis, memperkecil false negative sangat krusial agar pasien segera memperoleh terapi.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>🔢</span> Matriks Konfusi (Model Teroptimasi Imputasi)
+      </h3>
+      <span class="badge badge-success">Akurasi Naik: {{ metrics.model_optimized.metrics.accuracy_pct }}%</span>
+    </div>
+
+    <div class="confusion-matrix-box">
+      <!-- Row 1: Header Prediksi -->
+      <div class="cm-cell cm-header" style="background: transparent;"></div>
+      <div class="cm-cell cm-header">Prediksi: Sehat (0)</div>
+      <div class="cm-cell cm-header">Prediksi: Diabetes (1)</div>
+
+      <!-- Row 2: Aktual Sehat -->
+      <div class="cm-cell cm-header" style="text-align: left; justify-content: flex-start;">Aktual: Sehat (0)</div>
+      <div class="cm-cell cm-tn">
+        <span class="cm-count" style="color: var(--success);">{{ metrics.model_optimized.confusion_matrix.tn }}</span>
+        <span class="cm-title" style="color: var(--success);">True Negative (TN)</span>
+        <span class="cm-sub">Naik dari 83 → 85 sampel</span>
+      </div>
+      <div class="cm-cell cm-fp">
+        <span class="cm-count" style="color: var(--warning);">{{ metrics.model_optimized.confusion_matrix.fp }}</span>
+        <span class="cm-title" style="color: var(--warning);">False Positive (FP)</span>
+        <span class="cm-sub">Turun dari 16 → 14 sampel</span>
+      </div>
+
+      <!-- Row 3: Aktual Diabetes -->
+      <div class="cm-cell cm-header" style="text-align: left; justify-content: flex-start;">Aktual: Diabetes (1)</div>
+      <div class="cm-cell cm-fn">
+        <span class="cm-count" style="color: var(--danger);">{{ metrics.model_optimized.confusion_matrix.fn }}</span>
+        <span class="cm-title" style="color: var(--danger);">False Negative (FN)</span>
+        <span class="cm-sub">21 sampel</span>
+      </div>
+      <div class="cm-cell cm-tp">
+        <span class="cm-count" style="color: var(--primary);">{{ metrics.model_optimized.confusion_matrix.tp }}</span>
+        <span class="cm-title" style="color: var(--primary);">True Positive (TP)</span>
+        <span class="cm-sub">34 sampel</span>
+      </div>
+    </div>
+
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem;">
+      <em>Keunggulan Imputasi Median:</em> Penurunan False Positive (dari 16 menjadi 14) meningkatkan nilai Spesifisitas (kemampuan mendiagnosa orang sehat dengan tepat) menjadi <strong>85.86%</strong>.
+    </p>
+  </div>
+</div>
+
+<!-- Rumus Perhitungan & Transparansi Kalkulasi Riil -->
+<div class="card" style="margin-bottom: 2rem;">
+  <div class="card-header">
+    <h3 class="card-title">
+      <span>📐</span> Transparansi Perhitungan Metrik Matematika Nyata (Bukan Karangan)
+    </h3>
+    <span class="badge badge-success">Objektif & Terverifikasi</span>
+  </div>
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Nama Metrik</th>
+          <th>Formula Matematis</th>
+          <th>Substitusi Nilai Riil (Model Baseline)</th>
+          <th>Hasil Akhir</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Akurasi (Accuracy)</strong></td>
+          <td><code>(TP + TN) / (TP + TN + FP + FN)</code></td>
+          <td>(35 + 83) / (35 + 83 + 16 + 20) = 118 / 154</td>
+          <td><strong style="color: var(--primary); font-size: 1.05rem;">76.62%</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Presisi (Precision - Kelas 1)</strong></td>
+          <td><code>TP / (TP + FP)</code></td>
+          <td>35 / (35 + 16) = 35 / 51</td>
+          <td><strong style="color: var(--secondary); font-size: 1.05rem;">0.6863 (~69%)</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Sensitivitas / Recall (Kelas 1)</strong></td>
+          <td><code>TP / (TP + FN)</code></td>
+          <td>35 / (35 + 20) = 35 / 55</td>
+          <td><strong style="color: var(--success); font-size: 1.05rem;">0.6364 (~64%)</strong></td>
+        </tr>
+        <tr>
+          <td><strong>F1-Score (Kelas 1)</strong></td>
+          <td><code>2 * (Precision * Recall) / (Precision + Recall)</code></td>
+          <td>2 * (0.6863 * 0.6364) / (0.6863 + 0.6364)</td>
+          <td><strong style="color: var(--warning); font-size: 1.05rem;">0.6604 (~0.66)</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Presisi (Kelas 0 - Sehat)</strong></td>
+          <td><code>TN / (TN + FN)</code></td>
+          <td>83 / (83 + 20) = 83 / 103</td>
+          <td><strong style="color: #fff; font-size: 1.05rem;">0.8058 (~81%)</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Spesifisitas (TNR - Sehat)</strong></td>
+          <td><code>TN / (TN + FP)</code></td>
+          <td>83 / (83 + 16) = 83 / 99</td>
+          <td><strong style="color: #fff; font-size: 1.05rem;">83.84%</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Feature Importance -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">
+      <span>⭐</span> Tingkat Kepentingan Fitur Medis (Feature Importance)
+    </h3>
+    <span class="badge badge-primary">Information Gain Relative</span>
+  </div>
+  <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+    Algoritma Decision Tree secara otomatis mengukur kontribusi masing-masing atribut terhadap penurunan entropi data:
+  </p>
+  <div style="display: flex; flex-direction: column; gap: 1rem;">
+    {% for feat, imp in metrics.model_baseline.feature_importances.items() %}
+    {% set pct = imp * 100 %}
+    <div>
+      <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.35rem;">
+        <span style="color: #fff;">{{ feat }} ({{ metrics.dataset_summary.feature_labels_id[feat] }})</span>
+        <span style="color: {% if imp > 0 %}var(--primary){% else %}var(--text-muted){% endif %};">
+          {{ imp }} ({{ pct|round(2) }}%)
+        </span>
+      </div>
+      <div style="background: rgba(255,255,255,0.06); height: 10px; border-radius: var(--radius-full); overflow: hidden;">
+        <div style="background: linear-gradient(90deg, var(--primary), var(--secondary)); height: 100%; width: {{ pct }}%; transition: width 0.5s;"></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

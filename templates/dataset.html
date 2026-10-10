@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-tag">📁 Kriteria 1 Soal UTS</div>
+  <h1 class="page-title">Sumber dan Karakteristik Dataset</h1>
+  <p class="page-subtitle">
+    Eksplorasi mendalam terhadap dataset sekunder <strong>Pima Indians Diabetes Database</strong> yang menjadi acuan pengujian klasifikasi pada penelitian jurnal dan project ini.
+  </p>
+</div>
+
+<!-- Informasi Sumber Dataset -->
+<div class="card" style="margin-bottom: 2rem;">
+  <div class="card-header">
+    <h3 class="card-title">
+      <span>🏥</span> Asal-Usul & Latar Belakang Klinis Dataset
+    </h3>
+    <span class="badge badge-primary">UCI Machine Learning Repository</span>
+  </div>
+  <div style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7;">
+    <p style="margin-bottom: 1rem;">
+      Dataset ini berasal dari <em>National Institute of Diabetes and Digestive and Kidney Diseases</em> (NIDDK), Amerika Serikat, yang dipublikasikan secara luas melalui <strong>UCI Machine Learning Repository</strong> dan platform <strong>Kaggle</strong>. Populasi subjek penelitian terdiri atas perempuan suku asli Pima (Pima Indians) berusia minimal 21 tahun yang tinggal di dekat Phoenix, Arizona. Suku Pima memiliki prevalensi diabetes tipe 2 tertinggi di dunia akibat faktor genetik dan perubahan gaya hidup modern.
+    </p>
+    <div class="grid-3" style="margin-top: 1.25rem;">
+      <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: var(--radius-sm); border-left: 3px solid var(--primary);">
+        <strong style="color: #fff; display: block; margin-bottom: 0.25rem;">Jumlah Entri Sampel</strong>
+        <span>768 Pasien (Baris Data)</span>
+      </div>
+      <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: var(--radius-sm); border-left: 3px solid var(--secondary);">
+        <strong style="color: #fff; display: block; margin-bottom: 0.25rem;">Jumlah Variabel</strong>
+        <span>8 Fitur Prediktor Medis + 1 Target (Outcome)</span>
+      </div>
+      <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: var(--radius-sm); border-left: 3px solid var(--success);">
+        <strong style="color: #fff; display: block; margin-bottom: 0.25rem;">Tipe Masalah AI</strong>
+        <span>Supervised Binary Classification (0: Sehat, 1: Diabetes)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Distribusi Kelas Target -->
+<div class="grid-2" style="margin-bottom: 2rem;">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>⚖️</span> Distribusi Kelas Target (Outcome)
+      </h3>
+      <span class="badge badge-warning">Imbalanced Ringan (~65% : 35%)</span>
+    </div>
+    <div style="padding: 1rem 0;">
+      <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 0.5rem;">
+        <span style="color: var(--success);">Kelas 0: Sehat (Non-Diabetes)</span>
+        <span style="color: #fff;">500 Pasien (65.1%)</span>
+      </div>
+      <div class="probability-bar-wrapper" style="margin-bottom: 1.5rem;">
+        <div class="prob-fill-sehat" style="width: 65.1%;"></div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 0.5rem;">
+        <span style="color: var(--danger);">Kelas 1: Diabetes</span>
+        <span style="color: #fff;">268 Pasien (34.9%)</span>
+      </div>
+      <div class="probability-bar-wrapper">
+        <div class="prob-fill-diabetes" style="width: 34.9%;"></div>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem;">
+        <em>Catatan Akademis:</em> Ketidakseimbangan kelas ini umum ditemukan pada dataset diagnostik medis di mana proporsi pasien sehat biasanya lebih banyak dibandingkan pasien positif sakit.
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>🔍</span> Temuan Anomali Nilai Kosong (0 Biologis)
+      </h3>
+      <span class="badge badge-danger">Perhatian Preprocessing</span>
+    </div>
+    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
+      Dalam catatan medis riil, nilai 0 pada glukosa, tekanan darah, ketebalan kulit, insulin, dan BMI merupakan nilai <strong>hilang/kosong terselubung</strong> (<em>missing values disguised as 0</em>) karena secara fisiologis manusia yang hidup tidak mungkin memiliki kadar glukosa darah 0 mg/dL atau BMI 0:
+    </p>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Variabel</th>
+            <th>Jumlah Nilai 0</th>
+            <th>Persentase</th>
+            <th>Status Medis</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for feat, data in metrics.dataset_summary.zero_counts.items() %}
+          {% if data.is_physiologically_abnormal %}
+          <tr>
+            <td><strong>{{ feat }}</strong></td>
+            <td>{{ data.count }} baris</td>
+            <td><span class="badge badge-danger">{{ data.percentage }}%</span></td>
+            <td><span style="color: var(--warning);">Tidak Wajar (Missing Data)</span></td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Tabel Statistik Deskriptif 8 Fitur -->
+<div class="card" style="margin-bottom: 2rem;">
+  <div class="card-header">
+    <h3 class="card-title">
+      <span>📊</span> Statistik Deskriptif 8 Variabel Prediktor Medis
+    </h3>
+    <span class="badge badge-primary">Hasil Kalkulasi Python Nyata</span>
+  </div>
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Nama Fitur</th>
+          <th>Nama Indonesia & Satuan</th>
+          <th>Rata-rata (Mean)</th>
+          <th>Standar Deviasi (Std)</th>
+          <th>Nilai Minimum</th>
+          <th>Median (Nilai Tengah)</th>
+          <th>Nilai Maksimum</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for feat, stat in metrics.dataset_summary.feature_stats.items() %}
+        <tr>
+          <td><code style="color: var(--primary);">{{ feat }}</code></td>
+          <td><strong>{{ stat.label_id }}</strong></td>
+          <td>{{ stat.mean }}</td>
+          <td>{{ stat.std }}</td>
+          <td>{{ stat.min }}</td>
+          <td><strong style="color: #fff;">{{ stat.median }}</strong></td>
+          <td>{{ stat.max }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Sampel 50 Data Pertama -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">
+      <span>📄</span> Cuplikan 50 Baris Pertama Dataset Pima Indians
+    </h3>
+    <span style="font-size: 0.85rem; color: var(--text-muted);">Menampilkan 50 dari {{ total_rows }} baris data</span>
+  </div>
+  <div class="table-responsive" style="max-height: 480px; overflow-y: auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Pregnancies</th>
+          <th>Glucose</th>
+          <th>BloodPressure</th>
+          <th>SkinThickness</th>
+          <th>Insulin</th>
+          <th>BMI</th>
+          <th>DiabetesPedigree</th>
+          <th>Age</th>
+          <th>Outcome (Target)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in sample_data %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ row.Pregnancies }}</td>
+          <td><strong>{{ row.Glucose }}</strong></td>
+          <td>{{ row.BloodPressure }}</td>
+          <td>{{ row.SkinThickness }}</td>
+          <td>{{ row.Insulin }}</td>
+          <td>{{ row.BMI }}</td>
+          <td>{{ row.DiabetesPedigreeFunction }}</td>
+          <td>{{ row.Age }}</td>
+          <td>
+            {% if row.Outcome == 1 %}
+            <span class="badge badge-danger">1 (Diabetes)</span>
+            {% else %}
+            <span class="badge badge-success">0 (Sehat)</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

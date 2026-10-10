@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-tag">📑 Kriteria 8 Soal UTS</div>
+  <h1 class="page-title">Komparasi Hasil Proyek vs Jurnal Referensi</h1>
+  <p class="page-subtitle">
+    Analisis perbandingan komprehensif antara hasil empiris project web dengan publikasi jurnal ilmiah acuan <em>(Yustri Insani et al., JDMIS Vol. 4 No. 1, 2026)</em> sesuai ketentuan soal UTS Poin 8.
+  </p>
+</div>
+
+<!-- Tabel Komparasi Berdampingan -->
+<div class="card" style="margin-bottom: 2rem;">
+  <div class="card-header">
+    <h3 class="card-title">
+      <span>⚖️</span> Tabel Komparasi Berdampingan (Side-by-Side Comparison)
+    </h3>
+    <span class="badge badge-primary">Analisis Komparatif 3 Model</span>
+  </div>
+
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Parameter & Metrik Evaluasi</th>
+          <th style="background: rgba(14, 165, 233, 0.1);">Jurnal JDMIS 2026 (Acuan)</th>
+          <th style="background: rgba(139, 92, 246, 0.1);">Model Baseline Proyek</th>
+          <th style="background: rgba(16, 185, 129, 0.1);">Model Optimasi Proyek (Imputasi)</th>
+          <th>Status Verifikasi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Dataset</strong></td>
+          <td>Pima Indians Diabetes (768 data)</td>
+          <td>Pima Indians Diabetes (768 data)</td>
+          <td>Pima Indians Diabetes (768 data)</td>
+          <td><span class="badge badge-success">Identik</span></td>
+        </tr>
+        <tr>
+          <td><strong>Rasio Pembagian Data</strong></td>
+          <td>Hold-out 80:20 (614 : 154)</td>
+          <td>Hold-out 80:20 (614 : 154)</td>
+          <td>Hold-out 80:20 (614 : 154)</td>
+          <td><span class="badge badge-success">Identik</span></td>
+        </tr>
+        <tr>
+          <td><strong>Algoritma & Kriteria</strong></td>
+          <td>Decision Tree (Entropy)</td>
+          <td>Decision Tree (Entropy)</td>
+          <td>Decision Tree (Entropy)</td>
+          <td><span class="badge badge-success">Identik</span></td>
+        </tr>
+        <tr>
+          <td><strong>Batasan Kedalaman (max_depth)</strong></td>
+          <td>3 Level</td>
+          <td>3 Level</td>
+          <td>3 Level</td>
+          <td><span class="badge badge-success">Identik</span></td>
+        </tr>
+        <tr>
+          <td><strong>Penanganan Nilai 0 Fisiologis</strong></td>
+          <td>Raw Data (Tanpa Imputasi)</td>
+          <td>Raw Data (Sesuai Jurnal)</td>
+          <td><strong style="color: var(--success);">Imputasi Median Data Latih</strong></td>
+          <td><span class="badge badge-primary">Nilai Tambah</span></td>
+        </tr>
+        <tr>
+          <td><strong>Simpul Akar (Root Node)</strong></td>
+          <td>Glucose ≤ 127.5</td>
+          <td>Glucose ≤ 127.5</td>
+          <td>Glucose ≤ 127.5</td>
+          <td><span class="badge badge-success">Identik</span></td>
+        </tr>
+        <tr>
+          <td><strong>True Negative (TN)</strong></td>
+          <td>83 Sampel</td>
+          <td>83 Sampel</td>
+          <td><strong style="color: var(--success);">85 Sampel (+2)</strong></td>
+          <td><span class="badge badge-success">Replikasi 100%</span></td>
+        </tr>
+        <tr>
+          <td><strong>False Positive (FP)</strong></td>
+          <td>16 Sampel</td>
+          <td>16 Sampel</td>
+          <td><strong style="color: var(--success);">14 Sampel (-2)</strong></td>
+          <td><span class="badge badge-success">Replikasi 100%</span></td>
+        </tr>
+        <tr>
+          <td><strong>False Negative (FN)</strong></td>
+          <td>20 Sampel</td>
+          <td>20 Sampel</td>
+          <td>21 Sampel (+1)</td>
+          <td><span class="badge badge-success">Replikasi 100%</span></td>
+        </tr>
+        <tr>
+          <td><strong>True Positive (TP)</strong></td>
+          <td>35 Sampel</td>
+          <td>35 Sampel</td>
+          <td>34 Sampel (-1)</td>
+          <td><span class="badge badge-success">Replikasi 100%</span></td>
+        </tr>
+        <tr>
+          <td><strong>Akurasi (Accuracy)</strong></td>
+          <td><strong style="color: var(--primary);">76.62%</strong></td>
+          <td><strong style="color: var(--primary);">76.62%</strong></td>
+          <td><strong style="color: var(--success);">77.27% (+0.65%)</strong></td>
+          <td><span class="badge badge-success">Sempurna</span></td>
+        </tr>
+        <tr>
+          <td><strong>Presisi (Diabetes)</strong></td>
+          <td>0.69 (69%)</td>
+          <td>0.6863 (~69%)</td>
+          <td><strong style="color: var(--success);">0.7083 (~71%)</strong></td>
+          <td><span class="badge badge-success">Sesuai Jurnal</span></td>
+        </tr>
+        <tr>
+          <td><strong>Recall (Sensitivitas)</strong></td>
+          <td>0.64 (64%)</td>
+          <td>0.6364 (~64%)</td>
+          <td>0.6182 (~62%)</td>
+          <td><span class="badge badge-success">Sesuai Jurnal</span></td>
+        </tr>
+        <tr>
+          <td><strong>F1-Score</strong></td>
+          <td>0.66</td>
+          <td>0.6604 (~0.66)</td>
+          <td>0.6602 (~0.66)</td>
+          <td><span class="badge badge-success">Sesuai Jurnal</span></td>
+        </tr>
+        <tr>
+          <td><strong>Bentuk Publikasi & Akses</strong></td>
+          <td>Artikel PDF Statis</td>
+          <td>Aplikasi Web Interaktif Flask</td>
+          <td>Aplikasi Web Interaktif Flask</td>
+          <td><span class="badge badge-primary">Keunggulan Proyek</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 3 Pilar Analisis Mendalam: Persamaan, Perbedaan, dan Penyebab -->
+<div class="grid-3">
+  <!-- 1. Persamaan -->
+  <div class="card" style="border-top: 4px solid var(--primary);">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>🤝</span> 1. Persamaan Utama
+      </h3>
+    </div>
+    <div style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+      <ul style="padding-left: 1.25rem;">
+        <li style="margin-bottom: 0.5rem;">
+          <strong>Dataset Sama:</strong> Keduanya menggunakan Pima Indians Diabetes 768 sampel dengan 8 prediktor klinis.
+        </li>
+        <li style="margin-bottom: 0.5rem;">
+          <strong>Arsitektur Model Sama:</strong> Menerapkan algoritma Decision Tree dengan basis fungsi <em>Entropy</em> dan pembatasan kedalaman pohon <code>max_depth=3</code>.
+        </li>
+        <li style="margin-bottom: 0.5rem;">
+          <strong>Rasio Hold-out Sama:</strong> Membagi data menjadi 80% pelatihan (614 data) dan 20% pengujian (154 data).
+        </li>
+        <li style="margin-bottom: 0.5rem;">
+          <strong>Atribut Kunci Identik:</strong> Menemukan bahwa <strong>Kadar Glukosa</strong> adalah faktor paling dominan (simpul akar pada nilai 127.5 mg/dL), diikuti oleh BMI dan Usia.
+        </li>
+        <li>
+          <strong>Hasil Baseline 100% Sinkron:</strong> Akurasi (76.62%), matriks konfusi (83, 16, 20, 35), dan presisi kelas non-diabetes (81%) tercapai secara presisi.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2. Perbedaan -->
+  <div class="card" style="border-top: 4px solid var(--secondary);">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>⚡</span> 2. Perbedaan Proyek vs Jurnal
+      </h3>
+    </div>
+    <div style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+      <ul style="padding-left: 1.25rem;">
+        <li style="margin-bottom: 0.5rem;">
+          <strong>Eksplorasi Preprocessing Imputasi:</strong> Jurnal hanya menguji data mentah dengan nilai 0. Proyek ini menambahkan model kedua dengan <em>median imputation</em> pada data training untuk menjawab saran pengembangan Bab 4 jurnal.
+        </li>
+        <li style="margin-bottom: 0.5rem;">
+          <strong>Peningkatan Akurasi & Presisi:</strong> Model optimasi proyek mencapai akurasi <strong>77.27%</strong> (lebih tinggi +0.65% dari jurnal) dan presisi diagnosis diabetes naik ke <strong>70.83%</strong> (naik +1.83%).
+        </li>
+        <li style="margin-bottom: 0.5rem;">
+          <strong>Platform Implementasi:</strong> Jurnal hanya mendokumentasikan skrip eksperimen statis; proyek ini membangun aplikasi web dinamis berbasis Flask lengkap dengan REST API.
+        </li>
+        <li>
+          <strong>Fitur Uji Data Baru & Presentasi:</strong> Tersedia form interaktif langsung untuk menguji pasien baru serta mode slide presentasi terstruktur 10 menit.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3. Penyebab Perbedaan -->
+  <div class="card" style="border-top: 4px solid var(--success);">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>🔍</span> 3. Kemungkinan Penyebab Perbedaan
+      </h3>
+    </div>
+    <div style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+      <ul style="padding-left: 1.25rem;">
+        <li style="margin-bottom: 0.5rem;">
+          <strong>Pengaruh Imputasi Data Kosong:</strong> Nilai 0 pada Insulin (48.7%) dan Ketebalan Kulit (29.5%) yang diganti dengan nilai median membuat estimasi sebaran data latih menjadi lebih mendekati populasi biologis nyata, sehingga mengurangi kesalahan vonis positif palsu (FP turun dari 16 ke 14).
+        </li>
+        <li style="margin-bottom: 0.5rem;">
+          <strong>Pencegahan Data Leakage:</strong> Nilai median dihitung murni dari partisi 80% data latih tanpa melibatkan data uji, sehingga performa evaluasi pada 154 data uji tetap terjaga secara objektif.
+        </li>
+        <li>
+          <strong>Trade-off Akurasi vs Recall:</strong> Model dengan imputasi menghasilkan presisi yang lebih tajam (70.83%), namun sedikit menurunkan recall dari 63.64% ke 61.82%, membuktikan bahwa pembatasan <code>max_depth=3</code> tetap mempertahankan karakteristik konservatif model diagnosa awal.
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

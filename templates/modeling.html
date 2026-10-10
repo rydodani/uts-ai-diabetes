@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-tag">🌳 Kriteria 3 Soal UTS</div>
+  <h1 class="page-title">Pelatihan & Visualisasi Model Decision Tree</h1>
+  <p class="page-subtitle">
+    Struktur pohon keputusan, formulasi Information Gain & Entropi, serta visualisasi grafik pohon keputusan yang dihasilkan dari 614 sampel data latih.
+  </p>
+</div>
+
+<!-- Penjelasan Teori & Formula Matematis -->
+<div class="grid-2" style="margin-bottom: 2rem;">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>📐</span> Kriteria Pemisahan: Entropi & Information Gain
+      </h3>
+      <span class="badge badge-primary">Algoritma C4.5 / CART</span>
+    </div>
+    <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+      <p style="margin-bottom: 0.75rem;">
+        Pohon keputusan menggunakan metrik <strong>Entropi</strong> untuk mengukur derajat ketidakteraturan atau ketidakmurnian (<em>impurity</em>) dalam kumpulan sampel data:
+      </p>
+      <div style="background: rgba(0,0,0,0.4); padding: 0.85rem; border-radius: var(--radius-sm); font-family: monospace; color: var(--primary); margin-bottom: 0.75rem;">
+        Entropy(S) = - ∑ [ p(c) * log₂(p(c)) ]
+      </div>
+      <p style="margin-bottom: 0.75rem;">
+        Atribut yang dipilih sebagai simpul pemisah (<em>splitting node</em>) adalah atribut yang menghasilkan <strong>Information Gain tertinggi</strong>:
+      </p>
+      <div style="background: rgba(0,0,0,0.4); padding: 0.85rem; border-radius: var(--radius-sm); font-family: monospace; color: var(--success); margin-bottom: 0.75rem;">
+        Gain(S, A) = Entropy(S) - ∑ [ (|Sᵥ| / |S|) * Entropy(Sᵥ) ]
+      </div>
+      <p>
+        Berdasarkan perhitungan pada 614 data latih, atribut <strong>Glucose</strong> menghasilkan Information Gain tertinggi (0.5254) sehingga terpilih sebagai <strong>Simpul Akar (Root Node)</strong>.
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>⚙️</span> Konfigurasi Hyperparameter Model
+      </h3>
+      <span class="badge badge-success">Optimasi Interpretabilitas</span>
+    </div>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Nilai Terpasang</th>
+            <th>Rasionalisasi Desain</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>criterion</strong></td>
+            <td><code style="color: var(--primary);">entropy</code></td>
+            <td>Sesuai acuan jurnal untuk menghitung Information Gain</td>
+          </tr>
+          <tr>
+            <td><strong>max_depth</strong></td>
+            <td><code style="color: var(--primary);">3</code></td>
+            <td>Mencegah overfitting & menjaga kemudahan interpretasi medis</td>
+          </tr>
+          <tr>
+            <td><strong>random_state</strong></td>
+            <td><code style="color: var(--primary);">42</code></td>
+            <td>Menghasilkan partisi deterministik 100% replikasi jurnal</td>
+          </tr>
+          <tr>
+            <td><strong>Simpul Akar</strong></td>
+            <td><span class="badge badge-primary">Glucose ≤ 127.5</span></td>
+            <td>Penanda klinis utama pembeda metabolisme gula darah</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Visualisasi Grafik Pohon Keputusan -->
+<div class="card" style="margin-bottom: 2rem;">
+  <div class="card-header">
+    <h3 class="card-title">
+      <span>🖼️</span> Visualisasi Diagram Pohon Keputusan (Decision Tree)
+    </h3>
+    <div style="display: flex; gap: 0.5rem;">
+      <button type="button" class="btn btn-outline" id="btnTreeBaseline" onclick="switchTree('baseline')" style="padding: 0.4rem 0.85rem; font-size: 0.85rem;">
+        Pohon Baseline (Jurnal)
+      </button>
+      <button type="button" class="btn btn-secondary" id="btnTreeOptimized" onclick="switchTree('optimized')" style="padding: 0.4rem 0.85rem; font-size: 0.85rem;">
+        Pohon Teroptimasi (Imputasi)
+      </button>
+    </div>
+  </div>
+
+  <div class="tree-viewer-box">
+    <img id="treeImage" src="{{ url_for('static', filename='img/decision_tree_baseline.png') }}" alt="Visualisasi Pohon Keputusan Baseline" class="tree-img">
+    <p id="treeCaption" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem;">
+      Gambar 1: Struktur Pohon Keputusan Baseline (Sesuai Gambar 5 Jurnal JDMIS 2026 - Root Node Glucose ≤ 127.5, max_depth=3).
+    </p>
+  </div>
+</div>
+
+<!-- Aturan Keputusan (If-Then Rules) -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">
+      <span>📜</span> Ekstraksi Aturan Keputusan Klinis (If-Then Rules)
+    </h3>
+    <span class="badge badge-primary">Ekspor Teks Aturan</span>
+  </div>
+  <div class="grid-2">
+    <div>
+      <h4 style="font-size: 0.95rem; color: #fff; margin-bottom: 0.5rem;">Aturan Model Baseline (Jurnal JDMIS):</h4>
+      <pre style="background: rgba(0,0,0,0.5); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.825rem; overflow-x: auto; line-height: 1.5;">{{ metrics.model_baseline.rules_text }}</pre>
+    </div>
+
+    <div>
+      <h4 style="font-size: 0.95rem; color: #fff; margin-bottom: 0.5rem;">Aturan Model Teroptimasi Preprocessing:</h4>
+      <pre style="background: rgba(0,0,0,0.5); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.825rem; overflow-x: auto; line-height: 1.5;">{{ metrics.model_optimized.rules_text }}</pre>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTree(type) {
+  const img = document.getElementById('treeImage');
+  const caption = document.getElementById('treeCaption');
+  const btnBase = document.getElementById('btnTreeBaseline');
+  const btnOpt = document.getElementById('btnTreeOptimized');
+
+  if (type === 'baseline') {
+    img.src = "{{ url_for('static', filename='img/decision_tree_baseline.png') }}";
+    caption.innerText = "Gambar 1: Struktur Pohon Keputusan Baseline (Sesuai Gambar 5 Jurnal JDMIS 2026 - Root Node Glucose ≤ 127.5, max_depth=3).";
+    btnBase.className = "btn btn-outline";
+    btnOpt.className = "btn btn-secondary";
+  } else {
+    img.src = "{{ url_for('static', filename='img/decision_tree_optimized.png') }}";
+    caption.innerText = "Gambar 2: Struktur Pohon Keputusan Model Teroptimasi dengan Imputasi Median (max_depth=3).";
+    btnOpt.className = "btn btn-outline";
+    btnBase.className = "btn btn-secondary";
+  }
+}
+</script>
+{% endblock %}

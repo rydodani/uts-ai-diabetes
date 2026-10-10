@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-tag">⚡ Kriteria 6 Soal UTS</div>
+  <h1 class="page-title">Pengujian Data Pasien Baru (Live Prediction)</h1>
+  <p class="page-subtitle">
+    Masukkan 8 variabel rekam medis pasien untuk memprediksi probabilitas risiko diabetes secara real-time menggunakan model Decision Tree yang telah dilatih.
+  </p>
+</div>
+
+<!-- Preset Cepat untuk Presentasi / Demo -->
+<div class="card" style="margin-bottom: 2rem;">
+  <div class="card-header">
+    <h3 class="card-title">
+      <span>⚡</span> Tombol Preset Kasus Cepat (Sangat Berguna Saat Demo 10 Menit di Depan Dosen)
+    </h3>
+    <span class="badge badge-primary">Klik untuk Mengisi Form Otomatis</span>
+  </div>
+  <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+    Gunakan preset berikut agar saat presentasi di hadapan dosen Anda tidak perlu menginputkan angka satu per satu secara manual:
+  </p>
+  <div class="preset-container" id="presetChipsContainer"></div>
+  <div id="presetNotification" style="display: none; font-size: 0.825rem; color: var(--success); font-weight: 600;"></div>
+</div>
+
+<div class="grid-2" style="align-items: start;">
+  <!-- Form Input -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <span>📝</span> Form Input Parameter Klinis Pasien
+      </h3>
+      <span class="badge badge-success">Validasi Medis Aktif</span>
+    </div>
+
+    <form id="predictionForm">
+      <!-- Pemilihan Model -->
+      <div style="background: rgba(255,255,255,0.02); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); margin-bottom: 1.5rem;">
+        <label style="font-size: 0.85rem; font-weight: 700; color: #fff; display: block; margin-bottom: 0.5rem;">
+          Pilih Model Klasifikasi:
+        </label>
+        <div style="display: flex; gap: 1.25rem;">
+          <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.875rem; cursor: pointer;">
+            <input type="radio" name="model_type" value="baseline" checked>
+            <span>Model Baseline (Jurnal JDMIS)</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.875rem; cursor: pointer;">
+            <input type="radio" name="model_type" value="optimized">
+            <span>Model Optimasi (Imputasi Median)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 8 Inputs Grid -->
+      <div class="grid-2">
+        {% for feat, info in feature_info.items() %}
+        <div class="form-group">
+          <label class="form-label" for="input_{{ feat }}">
+            <span>{{ info.name }}</span>
+            <span class="unit-badge">{{ info.unit }}</span>
+          </label>
+          <input 
+            type="number" 
+            class="form-control" 
+            id="input_{{ feat }}" 
+            name="{{ feat }}" 
+            value="{{ info.default }}" 
+            min="{{ info.min }}" 
+            max="{{ info.max }}" 
+            step="{{ info.step }}" 
+            required
+          >
+          <div class="form-hint">{{ info.normal_hint }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+        <button type="submit" class="btn btn-primary" id="btnSubmitPredict" style="flex: 1; padding: 0.9rem;">
+          🔍 Analisis & Prediksi Diagnosa Pasien
+        </button>
+        <button type="reset" class="btn btn-secondary">
+          🔄 Reset Form
+        </button>
+      </div>
+
+      <div id="predictLoading" style="display: none; text-align: center; margin-top: 1rem; color: var(--primary); font-weight: 600;">
+        ⏳ Menghitung jalur percabangan pohon keputusan...
+      </div>
+    </form>
+  </div>
+
+  <!-- Hasil Prediksi -->
+  <div>
+    <div id="predictionResultContainer">
+      <div class="card" style="text-align: center; padding: 3rem 2rem; border-style: dashed;">
+        <span style="font-size: 3rem; display: block; margin-bottom: 1rem;">🩺</span>
+        <h3 style="color: #fff; margin-bottom: 0.5rem;">Belum Ada Analisis Prediksi</h3>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; max-width: 400px; margin: 0 auto;">
+          Silakan isi 8 parameter klinis pada formulir di sebelah kiri atau pilih salah satu tombol <strong>Preset Kasus Cepat</strong> di atas untuk melihat demonstrasi prediksi secara langsung.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

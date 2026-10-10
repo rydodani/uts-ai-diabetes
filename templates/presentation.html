@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+  <div>
+    <div class="page-tag">⏱️ Fitur Unggulan Presentasi Ujian</div>
+    <h1 class="page-title">Mode Presentasi 10 Menit (Pitch Deck View)</h1>
+    <p class="page-subtitle">
+      Struktur presentasi sistematis 6 slide yang dirancang khusus untuk memandu pemaparan di depan Dosen Pengampu (Ibu Abidatul Izzah, M.Kom) tepat dalam waktu 10 menit.
+    </p>
+  </div>
+
+  <div style="display: flex; gap: 0.5rem;">
+    <button type="button" class="btn btn-secondary" id="btnToggleNotes" style="font-size: 0.85rem;">
+      🗣️ Toggle Catatan Mahasiswa
+    </button>
+  </div>
+</div>
+
+<div class="presentation-container">
+  <!-- Timer & Controls Bar -->
+  <div class="timer-bar">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+        Sisa Waktu Presentasi:
+      </span>
+      <span class="timer-display" id="timerDisplay">10:00</span>
+      <button type="button" class="btn btn-primary" id="btnToggleTimer" style="padding: 0.4rem 0.85rem; font-size: 0.825rem;">
+        ▶ Mulai Timer
+      </button>
+      <button type="button" class="btn btn-secondary" id="btnResetTimer" style="padding: 0.4rem 0.85rem; font-size: 0.825rem;">
+        🔄 Reset
+      </button>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <div style="display: flex; gap: 0.35rem; margin-right: 0.75rem;">
+        {% for i in range(1, 7) %}
+        <button type="button" class="slide-pill" data-slide="{{ i }}" style="width: 32px; height: 32px; border-radius: var(--radius-full); border: 1px solid var(--border-light); font-weight: 700; cursor: pointer; font-size: 0.8rem;">
+          {{ i }}
+        </button>
+        {% endfor %}
+      </div>
+
+      <div class="slide-controls">
+        <button type="button" class="btn btn-secondary" id="btnPrevSlide" style="padding: 0.4rem 0.85rem; font-size: 0.85rem;">
+          ◀ Sebelumnya
+        </button>
+        <span id="slideCounter" style="font-weight: 700; font-size: 0.9rem; color: #fff; min-width: 50px; text-align: center;">1 / 6</span>
+        <button type="button" class="btn btn-primary" id="btnNextSlide" style="padding: 0.4rem 0.85rem; font-size: 0.85rem;">
+          Selanjutnya ▶
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide Wrapper -->
+  <div class="slide-wrapper">
+
+    <!-- SLIDE 1 -->
+    <div class="slide active" id="slide-1">
+      <span class="badge badge-primary" style="margin-bottom: 0.75rem;">SLIDE 1 • ALOKASI: MENIT 00:00 - 01:30</span>
+      <h2 style="font-size: 1.85rem; color: #fff; margin-bottom: 1rem;">
+        1. Judul Proyek, Latar Belakang & Karakteristik Dataset
+      </h2>
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--primary);">
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">Latar Belakang Klinis:</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+            Diabetes melitus merupakan penyakit kronis yang prevalensinya meningkat pesat. Deteksi dini secara konvensional memerlukan tes laboratorium berulang yang membutuhkan waktu. Kami mengimplementasikan <strong>Decision Tree</strong> untuk memberikan sistem pendukung keputusan diagnostik yang akurat dan transparan.
+          </p>
+        </div>
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--secondary);">
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">Karakteristik Dataset Pima Indians:</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+            • <strong>Sumber:</strong> UCI Machine Learning Repository / Kaggle (768 sampel).<br>
+            • <strong>Prediktor:</strong> 8 atribut klinis (Glukosa, Tekanan Darah, Insulin, BMI, Usia, dll).<br>
+            • <strong>Target (Outcome):</strong> 500 Non-Diabetes (65.1%) & 268 Diabetes (34.9%).
+          </p>
+        </div>
+      </div>
+      <div class="speaker-notes">
+        <h4>🗣️ Catatan Presentasi Mahasiswa (Panduan Bicara):</h4>
+        <p style="font-size: 0.875rem; color: var(--text-secondary);">
+          "Selamat pagi/siang Ibu Abidatul Izzah dan rekan-rekan. Pada kesempatan kali ini, kami mempresentasikan project UTS Kecerdasan Buatan mengenai Klasifikasi Diabetes menggunakan algoritma Decision Tree. Dataset yang kami gunakan adalah Pima Indians Diabetes dari UCI dengan 768 data pasien, di mana 500 berstatus sehat dan 268 berstatus diabetes. Acuan utama penelitian kami merujuk pada jurnal ilmiah JDMIS 2026."
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide" id="slide-2">
+      <span class="badge badge-primary" style="margin-bottom: 0.75rem;">SLIDE 2 • ALOKASI: MENIT 01:30 - 03:00</span>
+      <h2 style="font-size: 1.85rem; color: #fff; margin-bottom: 1rem;">
+        2. Preprocessing Data & Pembagian Data (Hold-Out 80:20)
+      </h2>
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--warning);">
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">Penanganan Anomali Nilai Nol Fisiologis:</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+            Ditemukan nilai 0 yang tidak wajar pada parameter biologis (Glukosa=5, Tekanan Darah=35, Kulit=227, Insulin=374, BMI=11).<br>
+            • Pada model <strong>Baseline</strong>, kami mengikuti jurnal dengan data asli.<br>
+            • Pada model <strong>Optimasi</strong>, kami melakukan imputasi median yang dihitung khusus dari data latih untuk mencegah <em>data leakage</em>.
+          </p>
+        </div>
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--success);">
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">Pembagian Data Training & Testing:</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+            Menggunakan metode <strong>Hold-out Splitting 80:20</strong>:<br>
+            • <strong>Data Latih (Training):</strong> 80% = <strong>614 sampel</strong> (untuk melatih pohon).<br>
+            • <strong>Data Uji (Testing):</strong> 20% = <strong>154 sampel</strong> (99 Sehat & 55 Diabetes) yang diisolasi ketat untuk pengujian.
+          </p>
+        </div>
+      </div>
+      <div class="speaker-notes">
+        <h4>🗣️ Catatan Presentasi Mahasiswa (Panduan Bicara):</h4>
+        <p style="font-size: 0.875rem; color: var(--text-secondary);">
+          "Pada tahap preprocessing, kami mengidentifikasi adanya nilai nol pada parameter fisiologis seperti insulin dan glukosa yang menandakan data hilang. Kami memisahkan data menjadi 80% data latih (614 data) dan 20% data uji (154 data). Menjawab saran pengembangan jurnal, kami juga membangun model komparasi dengan imputasi median dari data latih agar pengujian berlangsung objektif tanpa kebocoran data."
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide" id="slide-3">
+      <span class="badge badge-primary" style="margin-bottom: 0.75rem;">SLIDE 3 • ALOKASI: MENIT 03:00 - 05:00</span>
+      <h2 style="font-size: 1.85rem; color: #fff; margin-bottom: 1rem;">
+        3. Arsitektur Pemodelan Decision Tree (Entropy & max_depth=3)
+      </h2>
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--primary);">
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">Kriteria Information Gain & Entropi:</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+            • Algoritma memilih atribut dengan Information Gain terbesar sebagai simpul pemisah.<br>
+            • <strong>Simpul Akar (Root Node):</strong> Kadar Glukosa pada ambang batas <strong>≤ 127.5 mg/dL</strong> (Information Gain = 0.5254).<br>
+            • Percabangan berikutnya dipengaruhi oleh <strong>Indeks Massa Tubuh (BMI)</strong> dan <strong>Usia (Age)</strong>.
+          </p>
+        </div>
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--secondary);">
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">Rasionalisasi Pembatasan max_depth = 3:</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+            • Mencegah masalah <em>overfitting</em> pada data pelatihan.<br>
+            • Menghasilkan aturan keputusan (If-Then) yang ringkas, mudah dibaca, dan transparan bagi dokter maupun pasien tanpa sifat *black-box*.
+          </p>
+        </div>
+      </div>
+      <div class="speaker-notes">
+        <h4>🗣️ Catatan Presentasi Mahasiswa (Panduan Bicara):</h4>
+        <p style="font-size: 0.875rem; color: var(--text-secondary);">
+          "Model Decision Tree dilatih dengan kriteria entropi. Dari hasil pembentukan pohon, variabel Glukosa terbukti menjadi faktor risiko paling dominan dan terpilih sebagai root node dengan batas 127.5 mg/dL. Kedalaman pohon sengaja kami batasi 3 level sesuai jurnal agar logika diagnosa tetap transparan dan mudah dipahami oleh tenaga medis."
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide" id="slide-4">
+      <span class="badge badge-primary" style="margin-bottom: 0.75rem;">SLIDE 4 • ALOKASI: MENIT 05:00 - 07:00</span>
+      <h2 style="font-size: 1.85rem; color: #fff; margin-bottom: 1rem;">
+        4. Evaluasi Kinerja Nyata & Confusion Matrix (154 Data Uji)
+      </h2>
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm);">
+          <h4 style="color: #fff; margin-bottom: 0.75rem;">Hasil Matriks Konfusi (Confusion Matrix):</h4>
+          <ul style="list-style: none; font-size: 0.9rem; line-height: 1.8;">
+            <li>✅ <strong>True Negative (TN):</strong> 83 Pasien Sehat diprediksi Sehat.</li>
+            <li>⚠️ <strong>False Positive (FP):</strong> 16 Pasien Sehat diprediksi Diabetes.</li>
+            <li>🚨 <strong>False Negative (FN):</strong> 20 Pasien Diabetes diprediksi Sehat.</li>
+            <li>🎯 <strong>True Positive (TP):</strong> 35 Pasien Diabetes diprediksi Diabetes.</li>
+          </ul>
+        </div>
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm);">
+          <h4 style="color: #fff; margin-bottom: 0.75rem;">Metrik Hasil Perhitungan Nyata:</h4>
+          <ul style="list-style: none; font-size: 0.9rem; line-height: 1.8;">
+            <li>📊 <strong>Akurasi (Accuracy):</strong> <strong style="color: var(--primary);">76.62%</strong> (118 / 154 benar)</li>
+            <li>🎯 <strong>Presisi (Precision):</strong> <strong style="color: var(--secondary);">0.69 (68.63%)</strong></li>
+            <li>🔍 <strong>Recall (Sensitivitas):</strong> <strong style="color: var(--success);">0.64 (63.64%)</strong></li>
+            <li>⚖️ <strong>F1-Score:</strong> <strong style="color: var(--warning);">0.66 (0.6604)</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="speaker-notes">
+        <h4>🗣️ Catatan Presentasi Mahasiswa (Panduan Bicara):</h4>
+        <p style="font-size: 0.875rem; color: var(--text-secondary);">
+          "Hasil pengujian pada 154 data uji menghasilkan True Negative 83, True Positive 35, False Positive 16, dan False Negative 20. Akurasi yang kami peroleh adalah 76.62%, dengan presisi 69% dan recall 64%. Seluruh angka ini dihitung secara nyata menggunakan library Scikit-Learn dan terbukti 100% konsisten dengan laporan pada artikel jurnal referensi."
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide" id="slide-5">
+      <span class="badge badge-primary" style="margin-bottom: 0.75rem;">SLIDE 5 • ALOKASI: MENIT 07:00 - 08:30</span>
+      <h2 style="font-size: 1.85rem; color: #fff; margin-bottom: 1rem;">
+        5. Komparasi dengan Jurnal Ilmiah JDMIS 2026 (Poin 8 UTS)
+      </h2>
+      <div class="grid-3" style="margin-bottom: 1.5rem;">
+        <div style="background: rgba(255,255,255,0.02); padding: 1rem; border-radius: var(--radius-sm); border-top: 3px solid var(--primary);">
+          <strong style="color: #fff; display: block; margin-bottom: 0.35rem;">Persamaan:</strong>
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">
+            Dataset, rasio 80:20, algoritma Decision Tree Entropy, batasan max_depth=3, simpul akar Glukosa, serta akurasi baseline 76.62% dan matriks konfusi identik.
+          </span>
+        </div>
+        <div style="background: rgba(255,255,255,0.02); padding: 1rem; border-radius: var(--radius-sm); border-top: 3px solid var(--secondary);">
+          <strong style="color: #fff; display: block; margin-bottom: 0.35rem;">Perbedaan:</strong>
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">
+            Kami menambahkan model optimasi imputasi median data latih (akurasi naik ke <strong>77.27%</strong>, presisi naik ke <strong>70.83%</strong>) dan mengemasnya dalam aplikasi web interaktif Flask.
+          </span>
+        </div>
+        <div style="background: rgba(255,255,255,0.02); padding: 1rem; border-radius: var(--radius-sm); border-top: 3px solid var(--success);">
+          <strong style="color: #fff; display: block; margin-bottom: 0.35rem;">Penyebab Perbedaan:</strong>
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">
+            Penggantian nilai 0 pada insulin dan ketebalan kulit membuat sebaran fitur lebih akurat dan mengurangi vonis positif palsu (FP turun dari 16 ke 14).
+          </span>
+        </div>
+      </div>
+      <div class="speaker-notes">
+        <h4>🗣️ Catatan Presentasi Mahasiswa (Panduan Bicara):</h4>
+        <p style="font-size: 0.875rem; color: var(--text-secondary);">
+          "Sesuai ketentuan soal nomor 8, kami membandingkan hasil proyek dengan jurnal JDMIS. Persamaannya adalah akurasi baseline dan struktur pohon identik 100%. Perbedaannya, kami mengeksplorasi saran pengembangan jurnal dengan imputasi median yang sukses mendongkrak akurasi menjadi 77.27% serta memangkas false positive dari 16 menjadi 14 kasus."
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide" id="slide-6">
+      <span class="badge badge-primary" style="margin-bottom: 0.75rem;">SLIDE 6 • ALOKASI: MENIT 08:30 - 10:00</span>
+      <h2 style="font-size: 1.85rem; color: #fff; margin-bottom: 1rem;">
+        6. Demo Pengujian Data Baru, Kesiapan Deploy & Kesimpulan
+      </h2>
+      <div class="grid-2" style="margin-bottom: 1.5rem;">
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm);">
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">Live Demo & Kesiapan Deploy Online:</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+            • Form pengujian data baru terintegrasi langsung dengan model <code>.joblib</code> hasil training nyata.<br>
+            • Siap di-deploy online ke platform cloud <strong>Render</strong> menggunakan <code>Procfile</code> dan web server <code>gunicorn</code>.<br>
+            • Pengguna dapat langsung mengakses fitur uji coba dengan mengklik tombol di bawah.
+          </p>
+          <div style="margin-top: 1rem;">
+            <a href="{{ url_for('predict_page') }}" target="_blank" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+              ⚡ Buka Form Prediksi Pasien Baru →
+            </a>
+          </div>
+        </div>
+        <div style="background: rgba(255,255,255,0.02); padding: 1.25rem; border-radius: var(--radius-sm);">
+          <h4 style="color: #fff; margin-bottom: 0.5rem;">Kesimpulan Akhir:</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+            1. Algoritma Decision Tree terbukti efektif untuk klasifikasi diabetes dengan akurasi 76.62% - 77.27%.<br>
+            2. Glukosa adalah prediktor dominan dalam menentukan risiko diabetes.<br>
+            3. Seluruh 8 kriteria Soal UTS berhasil dipenuhi dan siap diakses secara online.
+          </p>
+        </div>
+      </div>
+      <div class="speaker-notes">
+        <h4>🗣️ Catatan Presentasi Mahasiswa (Panduan Bicara):</h4>
+        <p style="font-size: 0.875rem; color: var(--text-secondary);">
+          "Sebagai penutup, kami telah menyiapkan form pengujian data baru dan aplikasi ini telah siap di-deploy secara online di Render. Kesimpulannya, model Decision Tree mampu memberikan prediksi yang akurat sekaligus transparan untuk deteksi dini diabetes. Demikian presentasi dari kelompok kami, kami persilakan jika Ibu Dosen atau rekan-rekan memiliki pertanyaan. Terima kasih."
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/presentation.js') }}"></script>
+{% endblock %}

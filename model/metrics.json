@@ -1,0 +1,278 @@
+{
+  "dataset_summary": {
+    "total_rows": 768,
+    "total_cols": 9,
+    "feature_names": [
+      "Pregnancies",
+      "Glucose",
+      "BloodPressure",
+      "SkinThickness",
+      "Insulin",
+      "BMI",
+      "DiabetesPedigreeFunction",
+      "Age"
+    ],
+    "feature_labels_id": {
+      "Pregnancies": "Jumlah Kehamilan",
+      "Glucose": "Kadar Glukosa (mg/dL)",
+      "BloodPressure": "Tekanan Darah Diastolik (mm Hg)",
+      "SkinThickness": "Ketebalan Lipatan Kulit Triceps (mm)",
+      "Insulin": "Kadar Insulin Serum 2 Jam (mu U/ml)",
+      "BMI": "Indeks Massa Tubuh (BMI, kg/m²)",
+      "DiabetesPedigreeFunction": "Fungsi Riwayat Keturunan Diabetes (DPF)",
+      "Age": "Usia (Tahun)"
+    },
+    "target_name": "Outcome",
+    "target_distribution": {
+      "0": {
+        "label": "Non-Diabetes (Sehat)",
+        "count": 500,
+        "pct": 65.1
+      },
+      "1": {
+        "label": "Diabetes",
+        "count": 268,
+        "pct": 34.9
+      }
+    },
+    "zero_counts": {
+      "Pregnancies": {
+        "count": 111,
+        "percentage": 14.45,
+        "is_physiologically_abnormal": false
+      },
+      "Glucose": {
+        "count": 5,
+        "percentage": 0.65,
+        "is_physiologically_abnormal": true
+      },
+      "BloodPressure": {
+        "count": 35,
+        "percentage": 4.56,
+        "is_physiologically_abnormal": true
+      },
+      "SkinThickness": {
+        "count": 227,
+        "percentage": 29.56,
+        "is_physiologically_abnormal": true
+      },
+      "Insulin": {
+        "count": 374,
+        "percentage": 48.7,
+        "is_physiologically_abnormal": true
+      },
+      "BMI": {
+        "count": 11,
+        "percentage": 1.43,
+        "is_physiologically_abnormal": true
+      },
+      "DiabetesPedigreeFunction": {
+        "count": 0,
+        "percentage": 0.0,
+        "is_physiologically_abnormal": false
+      },
+      "Age": {
+        "count": 0,
+        "percentage": 0.0,
+        "is_physiologically_abnormal": false
+      }
+    },
+    "feature_stats": {
+      "Pregnancies": {
+        "label_id": "Jumlah Kehamilan",
+        "mean": 3.85,
+        "std": 3.37,
+        "min": 0.0,
+        "median": 3.0,
+        "max": 17.0
+      },
+      "Glucose": {
+        "label_id": "Kadar Glukosa (mg/dL)",
+        "mean": 120.89,
+        "std": 31.97,
+        "min": 0.0,
+        "median": 117.0,
+        "max": 199.0
+      },
+      "BloodPressure": {
+        "label_id": "Tekanan Darah Diastolik (mm Hg)",
+        "mean": 69.11,
+        "std": 19.36,
+        "min": 0.0,
+        "median": 72.0,
+        "max": 122.0
+      },
+      "SkinThickness": {
+        "label_id": "Ketebalan Lipatan Kulit Triceps (mm)",
+        "mean": 20.54,
+        "std": 15.95,
+        "min": 0.0,
+        "median": 23.0,
+        "max": 99.0
+      },
+      "Insulin": {
+        "label_id": "Kadar Insulin Serum 2 Jam (mu U/ml)",
+        "mean": 79.8,
+        "std": 115.24,
+        "min": 0.0,
+        "median": 30.5,
+        "max": 846.0
+      },
+      "BMI": {
+        "label_id": "Indeks Massa Tubuh (BMI, kg/m²)",
+        "mean": 31.99,
+        "std": 7.88,
+        "min": 0.0,
+        "median": 32.0,
+        "max": 67.1
+      },
+      "DiabetesPedigreeFunction": {
+        "label_id": "Fungsi Riwayat Keturunan Diabetes (DPF)",
+        "mean": 0.47,
+        "std": 0.33,
+        "min": 0.08,
+        "median": 0.37,
+        "max": 2.42
+      },
+      "Age": {
+        "label_id": "Usia (Tahun)",
+        "mean": 33.24,
+        "std": 11.76,
+        "min": 21.0,
+        "median": 29.0,
+        "max": 81.0
+      }
+    }
+  },
+  "splitting": {
+    "method": "Hold-out Validation",
+    "train_ratio": 0.8,
+    "test_ratio": 0.2,
+    "train_count": 614,
+    "test_count": 154,
+    "random_state": 42,
+    "test_target_distribution": {
+      "0": 99,
+      "1": 55
+    }
+  },
+  "model_baseline": {
+    "name": "Decision Tree Baseline (Jurnal JDMIS)",
+    "criterion": "entropy",
+    "max_depth": 3,
+    "random_state": 42,
+    "confusion_matrix": {
+      "tn": 83,
+      "fp": 16,
+      "fn": 20,
+      "tp": 35,
+      "matrix": [
+        [
+          83,
+          16
+        ],
+        [
+          20,
+          35
+        ]
+      ]
+    },
+    "metrics": {
+      "accuracy": 0.7662,
+      "accuracy_pct": 76.62,
+      "precision_diabetes": 0.6863,
+      "precision_diabetes_pct": 68.63,
+      "recall_diabetes": 0.6364,
+      "recall_diabetes_pct": 63.64,
+      "f1_diabetes": 0.6604,
+      "precision_sehat": 0.8058,
+      "recall_sehat": 0.8384,
+      "specificity": 0.8384
+    },
+    "feature_importances": {
+      "Pregnancies": 0.0,
+      "Glucose": 0.5254,
+      "BloodPressure": 0.0,
+      "SkinThickness": 0.0,
+      "Insulin": 0.0,
+      "BMI": 0.2982,
+      "DiabetesPedigreeFunction": 0.0,
+      "Age": 0.1765
+    },
+    "rules_text": "|--- Glucose <= 127.50\n|   |--- Age <= 28.50\n|   |   |--- BMI <= 30.95\n|   |   |   |--- class: 0\n|   |   |--- BMI >  30.95\n|   |   |   |--- class: 0\n|   |--- Age >  28.50\n|   |   |--- BMI <= 26.35\n|   |   |   |--- class: 0\n|   |   |--- BMI >  26.35\n|   |   |   |--- class: 0\n|--- Glucose >  127.50\n|   |--- BMI <= 29.95\n|   |   |--- Glucose <= 145.50\n|   |   |   |--- class: 0\n|   |   |--- Glucose >  145.50\n|   |   |   |--- class: 1\n|   |--- BMI >  29.95\n|   |   |--- Glucose <= 165.50\n|   |   |   |--- class: 1\n|   |   |--- Glucose >  165.50\n|   |   |   |--- class: 1\n"
+  },
+  "model_optimized": {
+    "name": "Decision Tree Preprocessed (Median Imputation)",
+    "criterion": "entropy",
+    "max_depth": 3,
+    "random_state": 42,
+    "imputation": {
+      "Pregnancies": 3.0,
+      "Glucose": 118.0,
+      "BloodPressure": 72.0,
+      "SkinThickness": 28.5,
+      "Insulin": 120.0,
+      "BMI": 32.0,
+      "DiabetesPedigreeFunction": 0.37,
+      "Age": 29.0
+    },
+    "confusion_matrix": {
+      "tn": 85,
+      "fp": 14,
+      "fn": 21,
+      "tp": 34,
+      "matrix": [
+        [
+          85,
+          14
+        ],
+        [
+          21,
+          34
+        ]
+      ]
+    },
+    "metrics": {
+      "accuracy": 0.7727,
+      "accuracy_pct": 77.27,
+      "precision_diabetes": 0.7083,
+      "precision_diabetes_pct": 70.83,
+      "recall_diabetes": 0.6182,
+      "recall_diabetes_pct": 61.82,
+      "f1_diabetes": 0.6602,
+      "precision_sehat": 0.8019,
+      "recall_sehat": 0.8586,
+      "specificity": 0.8586
+    },
+    "feature_importances": {
+      "Pregnancies": 0.0,
+      "Glucose": 0.5499,
+      "BloodPressure": 0.0,
+      "SkinThickness": 0.0,
+      "Insulin": 0.0,
+      "BMI": 0.2757,
+      "DiabetesPedigreeFunction": 0.0,
+      "Age": 0.1745
+    },
+    "rules_text": "|--- Glucose <= 127.50\n|   |--- Age <= 28.50\n|   |   |--- BMI <= 30.95\n|   |   |   |--- class: 0\n|   |   |--- BMI >  30.95\n|   |   |   |--- class: 0\n|   |--- Age >  28.50\n|   |   |--- BMI <= 26.35\n|   |   |   |--- class: 0\n|   |   |--- BMI >  26.35\n|   |   |   |--- class: 0\n|--- Glucose >  127.50\n|   |--- Glucose <= 166.50\n|   |   |--- BMI <= 29.95\n|   |   |   |--- class: 0\n|   |   |--- BMI >  29.95\n|   |   |   |--- class: 1\n|   |--- Glucose >  166.50\n|   |   |--- Glucose <= 178.50\n|   |   |   |--- class: 1\n|   |   |--- Glucose >  178.50\n|   |   |   |--- class: 1\n"
+  },
+  "journal_reference": {
+    "title": "Prediksi Diabetes Berbasis Decision Tree Dengan Menggunakan Dataset Pima Indians Diabetes",
+    "authors": "Yustri Insani, Marcel Filemon Naibaho, Sardo Pardingotan Sipayung",
+    "institution": "Universitas Katolik Santo Thomas, Medan",
+    "journal": "JDMIS: Journal of Data Mining and Information Systems",
+    "volume_issue": "Vol. 4, No. 1, 2026, pp. 40-45",
+    "doi": "10.54259/jdmis.v4i1.7107",
+    "reported_metrics": {
+      "accuracy_pct": 76.62,
+      "precision_diabetes": 0.69,
+      "recall_diabetes": 0.64,
+      "f1_diabetes": 0.66,
+      "precision_sehat": 0.81,
+      "tn": 83,
+      "fp": 16,
+      "fn": 20,
+      "tp": 35
+    }
+  }
+}

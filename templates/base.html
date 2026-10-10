@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title }} - UTS Kecerdasan Buatan (Decision Tree Diabetes)</title>
+  <meta name="description" content="Aplikasi Web Klasifikasi Diabetes Menggunakan Algoritma Decision Tree Berdasarkan Dataset Pima Indians Diabetes - Project UTS Kecerdasan Buatan D3 Manajemen Informatika">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩺</text></svg>">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="{{ url_for('index') }}" class="brand">
+        <span style="font-size: 1.4rem;">🩺</span>
+        <span>DiabeTree <span style="color: var(--primary);">AI</span></span>
+        <span class="brand-badge">UTS AI 2026</span>
+      </a>
+
+      <ul class="nav-links">
+        <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+          <a href="{{ url_for('index') }}">📊 Dashboard</a>
+        </li>
+        <li class="nav-item {% if request.path == '/dataset' %}active{% endif %}">
+          <a href="{{ url_for('dataset') }}">📁 Dataset</a>
+        </li>
+        <li class="nav-item {% if request.path == '/preprocessing' %}active{% endif %}">
+          <a href="{{ url_for('preprocessing') }}">⚙️ Preprocessing</a>
+        </li>
+        <li class="nav-item {% if request.path == '/modeling' %}active{% endif %}">
+          <a href="{{ url_for('modeling') }}">🌳 Decision Tree</a>
+        </li>
+        <li class="nav-item {% if request.path == '/evaluation' %}active{% endif %}">
+          <a href="{{ url_for('evaluation') }}">🎯 Evaluasi</a>
+        </li>
+        <li class="nav-item {% if request.path == '/comparison' %}active{% endif %}">
+          <a href="{{ url_for('comparison') }}">📑 Komparasi Jurnal</a>
+        </li>
+        <li class="nav-item {% if request.path == '/predict' %}active{% endif %}">
+          <a href="{{ url_for('predict_page') }}">⚡ Uji Data Baru</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ url_for('presentation') }}" class="presentation-btn">
+            ⏱️ Presentasi 10 Menit
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <p style="font-weight: 600; color: #fff;">
+        Project Ujian Tengah Semester (UTS) Genap 2026/2027 — Mata Kuliah Kecerdasan Buatan
+      </p>
+      <p>
+        Program Studi D3 Manajemen Informatika | PSDKU Kota Kediri — Politeknik Negeri Malang
+      </p>
+      <p style="font-size: 0.775rem; color: var(--text-muted); margin-top: 0.5rem;">
+        Algoritma: <strong>Decision Tree (Entropy)</strong> | Dataset: <strong>Pima Indians Diabetes (768 Sampel)</strong> | Framework: <strong>Python & Flask</strong>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
